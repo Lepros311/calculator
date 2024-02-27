@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calc-container {
+    width: 700px;
+    height: auto;
+    border: solid 2px blue;
+}
+
+#display {
+    width: 100%;
+    border: solid 1px brown;
+}
+
+#rec-btns-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sq-btns-containers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.num-btns {
+    border: solid 1px orange;
+}
+
+.op-btns {
+    border: solid 1px pink;
+}
+
+#eq-btn {
+    border: solid 1px green;
+}
+
+#clr-btn {
+    border: solid 1px yellow;
+}
+
+#undo-btn {
+    border: solid 1px purple;
+}
+
