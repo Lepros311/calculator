@@ -5,13 +5,14 @@
 }
 
 body {
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #calc-container {
-    width: 700px;
+    width: 500px;
     height: auto;
     border: solid 2px blue;
 }
