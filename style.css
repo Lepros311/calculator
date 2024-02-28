@@ -28,11 +28,11 @@ body {
     padding: 10px;
 }
 
-#math {
+#calculation {
     padding: 5px 10px;
 }
 
-#total {
+#result {
     padding: 5px 10px;
     font-size: 2em;
 }
@@ -80,7 +80,7 @@ body {
     background-color: white;
 }
 
-.num-btns {
+.num-btns, #dec-btn {
     border: solid 1px orange;
 }
 
