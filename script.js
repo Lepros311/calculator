@@ -118,7 +118,6 @@ function equalsJobs() {
         calculation.innerText = `${calculation.innerText.slice(0, -2)}`;
     };
     calculation.innerText += ` =`;
-    debugger;
     getOperands(calculation.innerText.replace(/\s+/g,'').split(''));
     resultNum = operate(operator, operand1, operand2);
     result.innerText = resultNum;
@@ -153,21 +152,24 @@ function undo() {
         userChoices.pop();
         userChoices.pop();
         calculation.textContent = calculation.textContent.slice(0, -2);
+        decBtn.disabled = true;   
     }
     if (result.innerText == resultNum) {
         result.innerText = '';
         calculation.textContent = calculation.textContent.slice(0, -1);
-        const pattern = /[+\-x/]\.|\.\ [+\-x/]/;
-        if (pattern.test(calculation.textContent)) {
-            decBtn.disabled = true;
-        }
-        else {
+        if (userChoicesArr[userChoicesArr.length - 1] == '.')
             decBtn.removeAttribute("disabled");
+        else {
+            decBtn.disabled = true;
         }
     } 
     userChoices.pop();
     calculation.textContent = calculation.textContent.slice(0, -1);
-    if (userChoices[userChoices.length - 1] == '.') {
+    const pattern1 = /.*\..*[+\-x/]/;
+    if (userChoicesArr[userChoicesArr.length - 1] == '.') {
         decBtn.removeAttribute("disabled");
     }
+    // else if (userChoicesArr[userChoicesArr.length - 1] == /[+-x/]/) {
+    //     decBtn.disabled = true;
+    // }
 }
