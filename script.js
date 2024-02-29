@@ -1,7 +1,7 @@
 const calculation = document.querySelector('#calculation');
 const result = document.querySelector('#result');
 const clrBtn = document.querySelector('#clr-btn');
-const undoBtn = document.querySelector('#undoBtn');
+const undoBtn = document.querySelector('#undo-btn');
 const numBtns = document.querySelectorAll('.num-btns');
 const opBtns = document.querySelectorAll('.op-btns');
 const eqBtn = document.querySelector('#eq-btn');
@@ -74,27 +74,27 @@ function getOperands(userChoices) {
 numBtns.forEach((button) => {
     button.addEventListener('click', function (e) {
         let num = e.target.innerText;
-
         if (result.innerText != '') {
             clear();
         }
-
         calculation.textContent += `${num}`;
-
-        // if (calculation.innerText.includes(operator)) {
-        //     calculation.innerText += ` ${num}`;
-        // }
-        // else {
-        //     calculation.innerText += `${num}`;
-        // }
-        
         userChoices.push(num);
     });
-    
 });
 
 decBtn.addEventListener('click', function (e) {
+    if (result.innerText != '') {
+        clear();
+    }
     calculation.innerText += e.target.innerText;
+    userChoices.push(e.target.innerText)
+    if (calculation.innerText.includes('.') && (operator == null)) {
+        decBtn.disabled = true;
+    }
+    const pattern = /[+-x/]\./g;
+    if (pattern.test(calculation.innerText)) {
+        decBtn.disabled = true;
+    }
 });
 
 opBtns.forEach((button) => {
@@ -105,6 +105,7 @@ opBtns.forEach((button) => {
             calculation.textContent = `${resultNum} ${operator} `;
             result.textContent = '';
         };
+        decBtn.removeAttribute("disabled");
     });
 });
 
@@ -124,6 +125,7 @@ function equalsJobs() {
     operand1arr = [];
     operand2arr = [];
     userChoices = [];
+    decBtn.removeAttribute("disabled");
 }
 
 clrBtn.addEventListener('click', function() {
@@ -133,15 +135,39 @@ clrBtn.addEventListener('click', function() {
 function clear () {
     calculation.innerText = '';
     result.innerText = '';
-    for (let i = 0; i < operand1arr.length; i++) {
-        operand1arr.pop();
-    };
-    for (let i = 0; i< operand2arr.length; i++) {
-        operand2arr.pop();
-    };
-    for (let i = 0; i < userChoices.length; i++) {
-        userChoices.pop();
-    }
+    operand1arr = [];
+    operand2arr = [];
+    userChoices = [];
     operator = null;
     operatorIndex = null;
+    decBtn.removeAttribute("disabled");
+}
+
+undoBtn.addEventListener('click', function () {
+    undo();
+});
+
+function undo() {
+    let userChoicesArr = calculation.textContent.split('');
+    if (userChoicesArr[userChoicesArr.length - 1] == ' ') {
+        userChoices.pop();
+        userChoices.pop();
+        calculation.textContent = calculation.textContent.slice(0, -2);
+    }
+    if (result.innerText == resultNum) {
+        result.innerText = '';
+        calculation.textContent = calculation.textContent.slice(0, -1);
+        const pattern = /[+\-x/]\.|\.\ [+\-x/]/;
+        if (pattern.test(calculation.textContent)) {
+            decBtn.disabled = true;
+        }
+        else {
+            decBtn.removeAttribute("disabled");
+        }
+    } 
+    userChoices.pop();
+    calculation.textContent = calculation.textContent.slice(0, -1);
+    if (userChoices[userChoices.length - 1] == '.') {
+        decBtn.removeAttribute("disabled");
+    }
 }
