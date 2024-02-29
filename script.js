@@ -15,6 +15,8 @@ let operatorIndex = null;
 let operand1 = null;
 let operand2 = null;
 let resultNum = null;
+let backupOperand1arr = [];
+let backupOperand2arr = [];
 
 function add(num1, num2) {
     return num1 + num2;
@@ -68,6 +70,8 @@ function getOperands(userChoices) {
     }
     operand1 = parseFloat(operand1arr.join(''));
     operand2 = parseFloat(operand2arr.join(''));
+    backupOperand1arr = operand1arr;
+    backupOperand2arr = operand2arr;
 }
 
 
@@ -147,29 +151,38 @@ undoBtn.addEventListener('click', function () {
 });
 
 function undo() {
+    debugger;
     let userChoicesArr = calculation.textContent.split('');
     if (userChoicesArr[userChoicesArr.length - 1] == ' ') {
         userChoices.pop();
         userChoices.pop();
-        calculation.textContent = calculation.textContent.slice(0, -2);
-        decBtn.disabled = true;   
+        calculation.textContent = calculation.textContent.slice(0, -2);        
+        if  (((backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.')))) 
+        || 
+            (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.'))))) {
+            decBtn.disabled = true;
+        }
+        else {
+            decBtn.removeAttribute("disabled");
+        }  
     }
     if (result.innerText == resultNum) {
         result.innerText = '';
         calculation.textContent = calculation.textContent.slice(0, -1);
-        if (userChoicesArr[userChoicesArr.length - 1] == '.')
-            decBtn.removeAttribute("disabled");
-        else {
+
+        if  (((backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.')))) 
+        || 
+            (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.'))))) {
             decBtn.disabled = true;
+        }
+        else {
+            decBtn.removeAttribute("disabled");
         }
     } 
     userChoices.pop();
     calculation.textContent = calculation.textContent.slice(0, -1);
-    const pattern1 = /.*\..*[+\-x/]/;
     if (userChoicesArr[userChoicesArr.length - 1] == '.') {
         decBtn.removeAttribute("disabled");
     }
-    // else if (userChoicesArr[userChoicesArr.length - 1] == /[+-x/]/) {
-    //     decBtn.disabled = true;
-    // }
 }
+
