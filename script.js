@@ -17,6 +17,8 @@ let operand2 = null;
 let resultNum = null;
 let backupOperand1arr = [];
 let backupOperand2arr = [];
+let tempOperand1arr = [];
+let tempOperand2arr = [];
 
 function add(num1, num2) {
     return num1 + num2;
@@ -82,6 +84,10 @@ numBtns.forEach((button) => {
             clear();
         }
         calculation.textContent += `${num}`;
+        tempOperand2arr = calculation.textContent.split('')
+        if (operator) {
+        tempOperand2arr = tempOperand2arr.slice(tempOperand2arr.indexOf(/[+-x/]/), -1);
+        }
         userChoices.push(num);
     });
 });
@@ -104,6 +110,7 @@ decBtn.addEventListener('click', function (e) {
 opBtns.forEach((button) => {
     button.addEventListener('click', function (e) {
         operator = e.target.innerText;
+        tempOperand1arr = calculation.textContent.split('');
         calculation.textContent += ` ${operator} `;
         if (operatorIndex != null) {
             calculation.textContent = `${resultNum} ${operator} `;
@@ -150,38 +157,61 @@ undoBtn.addEventListener('click', function () {
     undo();
 });
 
-function undo() {
-    debugger;
+function undo() {    
     let userChoicesArr = calculation.textContent.split('');
+    // debugger;
+
     if (userChoicesArr[userChoicesArr.length - 1] == ' ') {
         userChoices.pop();
         userChoices.pop();
+        // userChoicesArr.pop();
+        // userChoicesArr.pop();
+        operatorIndex = null;
+        operator = null;
         calculation.textContent = calculation.textContent.slice(0, -2);        
-        if  (((backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.')))) 
-        || 
-            (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.'))))) {
+        if (((backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.'))))) {
             decBtn.disabled = true;
+            backupOperand2arr = backupOperand2arr.filter(el => el != '.');
         }
-        else {
+        else if (((!backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.')))) {
             decBtn.removeAttribute("disabled");
         }  
+        
+        if (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.')))) {
+            decBtn.disabled = true;
+            backupOperand1arr = backupOperand1arr.filter(el => el != '.');
+        }
+        else if (((!backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.'))))) {
+            decBtn.removeAttribute("disabled");
+        }
     }
     if (result.innerText == resultNum) {
         result.innerText = '';
         calculation.textContent = calculation.textContent.slice(0, -1);
 
-        if  (((backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.')))) 
-        || 
-            (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.'))))) {
+        if (((backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.'))))) {
             decBtn.disabled = true;
+            backupOperand2arr = backupOperand2arr.filter(el => el != '.');
         }
-        else {
-            decBtn.removeAttribute("disabled");
+ 
+        if (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.')))) {
+            decBtn.disabled = true;
+            backupOperand2arr = backupOperand2arr.filter(el => el != '.');
         }
     } 
     userChoices.pop();
     calculation.textContent = calculation.textContent.slice(0, -1);
+    
+    if ((operator == null) && (tempOperand1arr.includes('.'))) {
+        decBtn.disabled = true;
+    }
+    // else if (!tempOperand1arr.includes('.')) {
+    //     decBtn.removeAttribute("disabled");
+    // }
     if (userChoicesArr[userChoicesArr.length - 1] == '.') {
+        decBtn.removeAttribute("disabled");
+    }
+    if ((calculation.textContent == '') && (decBtn.disabled == true)) {
         decBtn.removeAttribute("disabled");
     }
 }
