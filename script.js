@@ -19,6 +19,7 @@ let backupOperand1arr = [];
 let backupOperand2arr = [];
 let tempOperand1arr = [];
 let tempOperand2arr = [];
+const pattern = /[+-x/]\./g;
 
 function add(num1, num2) {
     return num1 + num2;
@@ -101,7 +102,6 @@ decBtn.addEventListener('click', function (e) {
     if (calculation.innerText.includes('.') && (operator == null)) {
         decBtn.disabled = true;
     }
-    const pattern = /[+-x/]\./g;
     if (pattern.test(calculation.innerText)) {
         decBtn.disabled = true;
     }
@@ -109,9 +109,18 @@ decBtn.addEventListener('click', function (e) {
 
 opBtns.forEach((button) => {
     button.addEventListener('click', function (e) {
+        debugger;
         operator = e.target.innerText;
         tempOperand1arr = calculation.textContent.split('');
-        calculation.textContent += ` ${operator} `;
+        
+        if ((calculation.textContent.includes('+')) || (calculation.textContent.includes('-')) || (calculation.textContent.includes('x')) || (calculation.textContent.includes('/')) && (!calculation.textContent.includes('='))) {
+            equalsJobs();
+        }
+
+        if (!pattern.test(calculation.textContent)) {
+            calculation.textContent += ` ${operator} `;
+        };
+
         if (operatorIndex != null) {
             calculation.textContent = `${resultNum} ${operator} `;
             result.textContent = '';
@@ -164,8 +173,6 @@ function undo() {
     if (userChoicesArr[userChoicesArr.length - 1] == ' ') {
         userChoices.pop();
         userChoices.pop();
-        // userChoicesArr.pop();
-        // userChoicesArr.pop();
         operatorIndex = null;
         operator = null;
         calculation.textContent = calculation.textContent.slice(0, -2);        
@@ -193,11 +200,18 @@ function undo() {
             decBtn.disabled = true;
             backupOperand2arr = backupOperand2arr.filter(el => el != '.');
         }
- 
+        else if (((!backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.')))) {
+            decBtn.removeAttribute("disabled");
+        }  
+        
         if (((backupOperand1arr.includes('.'))) && ((backupOperand2arr.includes('.')) || (!backupOperand2arr.includes('.')))) {
             decBtn.disabled = true;
-            backupOperand2arr = backupOperand2arr.filter(el => el != '.');
+            backupOperand1arr = backupOperand1arr.filter(el => el != '.');
         }
+        else if (((!backupOperand2arr.includes('.')) && ((backupOperand1arr.includes('.')) || (!backupOperand1arr.includes('.'))))) {
+            decBtn.removeAttribute("disabled");
+        }
+
     } 
     userChoices.pop();
     calculation.textContent = calculation.textContent.slice(0, -1);
@@ -205,14 +219,10 @@ function undo() {
     if ((operator == null) && (tempOperand1arr.includes('.'))) {
         decBtn.disabled = true;
     }
-    // else if (!tempOperand1arr.includes('.')) {
-    //     decBtn.removeAttribute("disabled");
-    // }
     if (userChoicesArr[userChoicesArr.length - 1] == '.') {
         decBtn.removeAttribute("disabled");
     }
     if ((calculation.textContent == '') && (decBtn.disabled == true)) {
-        // decBtn.removeAttribute("disabled");
         clear();
     }
 }
