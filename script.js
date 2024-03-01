@@ -212,7 +212,8 @@ function undo() {
         decBtn.removeAttribute("disabled");
     }
     if ((calculation.textContent == '') && (decBtn.disabled == true)) {
-        decBtn.removeAttribute("disabled");
+        // decBtn.removeAttribute("disabled");
+        clear();
     }
 }
 
