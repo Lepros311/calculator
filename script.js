@@ -114,40 +114,40 @@ opBtns.forEach((button) => {
             equalsJobs();
             tempOperand1arr = calculation.textContent.split('');
         
-        if ((calculation.textContent.includes('+')) || (calculation.textContent.includes('-')) || (calculation.textContent.includes('x')) || (calculation.textContent.includes('/')) && (!calculation.textContent.includes('='))) {
-            equalsJobs();
-        }
+            if ((calculation.textContent.includes('+')) || (calculation.textContent.includes('-')) || (calculation.textContent.includes('x')) || (calculation.textContent.includes('/')) && (!calculation.textContent.includes('='))) {
+                equalsJobs();
+            }
 
-        if (!pattern.test(calculation.textContent)) {
-            calculation.textContent += ` ${operator} `;
-        };
+            if (!pattern.test(calculation.textContent)) {
+                calculation.textContent += ` ${operator} `;
+            };
 
-        if (operatorIndex != null) {
+            if (operatorIndex != null) {
+                calculation.textContent = `${resultNum} ${operator} `;
+                result.textContent = '';
+            };
+            operator = e.target.innerText;
             calculation.textContent = `${resultNum} ${operator} `;
-            result.textContent = '';
-        };
-        operator = e.target.innerText;
-        calculation.textContent = `${resultNum} ${operator} `;
-        decBtn.removeAttribute("disabled");
+            decBtn.removeAttribute("disabled");
         }
         else {
-        operator = e.target.innerText;
-        tempOperand1arr = calculation.textContent.split('');
-        
-        if ((calculation.textContent.includes('+')) || (calculation.textContent.includes('-')) || (calculation.textContent.includes('x')) || (calculation.textContent.includes('/')) && (!calculation.textContent.includes('='))) {
-            equalsJobs();
+            operator = e.target.innerText;
+            tempOperand1arr = calculation.textContent.split('');
+            
+            if ((calculation.textContent.includes('+')) || (calculation.textContent.includes('-')) || (calculation.textContent.includes('x')) || (calculation.textContent.includes('/')) && (!calculation.textContent.includes('='))) {
+                equalsJobs();
+            }
+
+            if (!pattern.test(calculation.textContent)) {
+                calculation.textContent += ` ${operator} `;
+            };
+
+            if (operatorIndex != null) {
+                calculation.textContent = `${resultNum} ${operator} `;
+                result.textContent = '';
+            };
+            decBtn.removeAttribute("disabled");
         }
-
-        if (!pattern.test(calculation.textContent)) {
-            calculation.textContent += ` ${operator} `;
-        };
-
-        if (operatorIndex != null) {
-            calculation.textContent = `${resultNum} ${operator} `;
-            result.textContent = '';
-        };
-        decBtn.removeAttribute("disabled");
-    }
     });
 });
 
