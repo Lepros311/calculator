@@ -109,7 +109,28 @@ decBtn.addEventListener('click', function (e) {
 
 opBtns.forEach((button) => {
     button.addEventListener('click', function (e) {
-        debugger;
+        // debugger;
+        if (operator) {
+            equalsJobs();
+            tempOperand1arr = calculation.textContent.split('');
+        
+        if ((calculation.textContent.includes('+')) || (calculation.textContent.includes('-')) || (calculation.textContent.includes('x')) || (calculation.textContent.includes('/')) && (!calculation.textContent.includes('='))) {
+            equalsJobs();
+        }
+
+        if (!pattern.test(calculation.textContent)) {
+            calculation.textContent += ` ${operator} `;
+        };
+
+        if (operatorIndex != null) {
+            calculation.textContent = `${resultNum} ${operator} `;
+            result.textContent = '';
+        };
+        operator = e.target.innerText;
+        calculation.textContent = `${resultNum} ${operator} `;
+        decBtn.removeAttribute("disabled");
+        }
+        else {
         operator = e.target.innerText;
         tempOperand1arr = calculation.textContent.split('');
         
@@ -126,6 +147,7 @@ opBtns.forEach((button) => {
             result.textContent = '';
         };
         decBtn.removeAttribute("disabled");
+    }
     });
 });
 
